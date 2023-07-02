@@ -1,0 +1,12 @@
+FROM golang:alpine3.17 as builder
+
+WORKDIR /usr/src/app
+
+COPY hello.go hello.go
+RUN go build -o fullcycle *.go
+
+FROM scratch
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/fullcycle .
+
+CMD ["./fullcycle"]
