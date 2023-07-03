@@ -9,7 +9,7 @@ services:
     networks:
       - node-network
     volumes:
-      - .:/app
+      - .:/usr/src/app
     tty: true # abilita a interação com o mysql
     ports:
       - "3000:3000"

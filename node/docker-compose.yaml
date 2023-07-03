@@ -18,9 +18,11 @@ services:
       context: ./app
       dockerfile: Dockerfile
     container_name: app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh sh -c "npm install && node index.js"
     networks:
       - node-network
+    volumes:
+      - ./app:/usr/src/app
     tty: true # abilita a interação com o mysql
     ports:
       - "3000:3000"
@@ -29,7 +31,9 @@ services:
       - db
 
   db:
-    image: mysql:5.7
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     command: --innodb-use-native-aio=0
     container_name: db
     restart: always
